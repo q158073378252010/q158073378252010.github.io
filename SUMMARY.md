@@ -1,7 +1,7 @@
 # Summary
 
 * [Home](README.md)
-* [kitsunebi](/Apple/ios/kitsunebi.md)
+* [kitsunebi](/Apple/kitsunebi.md)
 
 
 
