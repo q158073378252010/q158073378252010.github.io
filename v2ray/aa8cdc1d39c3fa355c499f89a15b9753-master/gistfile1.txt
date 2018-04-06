@@ -1,0 +1,68 @@
+{
+    "stats": {},
+    "api": {
+        "services": [
+            "StatsService"
+        ],
+        "tag": "api"
+    },
+    "policy": {
+        "levels": {
+            "0": {
+                "connIdle": 300,
+                "downlinkOnly": 30,
+                "handshake": 4,
+                "uplinkOnly": 5,
+                "statsUserDownlink": true,
+                "statsUserUplink": true
+            }
+        }
+    },
+    "inbound": {
+        "port": 8002,
+        "protocol": "vmess",
+        "settings": {
+            "clients": [
+                {
+                    "alterId": 64,
+                    "email": "123@gmail.com",
+                    "id": "e731f153-4f31-49d3-9e8f-ff8f396135ef",
+                    "level": 0
+                }
+            ],
+            "disableInsecureEncryption": true
+        },
+        "streamSettings": {
+            "network": "tcp"
+        }
+    },
+    "inboundDetour": [
+        {
+            "listen": "127.0.0.1",
+            "port": 10085,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1"
+            },
+            "tag": "api"
+        }
+    ],
+    "outbound": {
+        "protocol": "freedom",
+        "settings": {}
+    },
+    "routing": {
+        "settings": {
+            "rules": [
+                {
+                    "inboundTag": [
+                        "api"
+                    ],
+                    "outboundTag": "api",
+                    "type": "field"
+                }
+            ]
+        },
+        "strategy": "rules"
+    }
+}
