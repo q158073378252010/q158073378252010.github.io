@@ -1,0 +1,22 @@
+下载 GFWList
+wget https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
+
+base64解码
+base64 -d -i fileName		-d 从标准输入中读取以进行base64编码的内容，解码输出。-i 忽略非字母表字符，比如换行符。
+
+GFWList_dns
+排除有“https://”和“http://”的行
+cat gfwlist_201804231011-d.txt | egrep  -v "https://" | egrep -v "http://" | egrep -v "@@"> gfwlist_201804240900-d-egrep_1-2.txt
+
+去除“/”至行末尾的字符和“||”字符
+sed '17,$s/\/.*$//' gfwlist_201804240900-d-egrep_1-2.txt | sed '/\(^||\)/s///' > gfwlist_201804240900-d-egrep_1-2_sed-1-2.txt
+
+在不已！开头的行的末尾添加字符串 “127.0.0.1#8090”
+sed '/^[^!]/s/$/\/127.0.0.1#8090/g'				注：^[^!] 匹配不已！开头的行
+
+在不已！开头的行末尾添加字符串“127..0.0.1#8090” 后 再在以！开头的行添加注释符号“#” 再在以“8090” 结尾的行的行首添加字符串“server=/”
+sed '/^[^!]/s/$/\/127.0.0.1#8090/g' gfwlist_201804240900-d-egrep_1-2_sed-1-2.txt | sed '/^!/s/^/#/g' | sed '/8090$/s/^/server=\//g' > gfwlist_201804240900-d-egrep_1-2_sed-1-2_1.txt
+
+在空行增加注释
+sed 's/^[[:space:]]*$/##############@@@@@@@@@@@@@#########/g' 	注：[[:space:]]表示空格或者tab的集合，这里有点意外的是居然匹配了^M这个不可见的换行符号。另外，注意到[[:space:]]后面跟着一个*，表示匹配0个或多个
+
