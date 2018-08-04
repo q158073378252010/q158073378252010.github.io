@@ -1,0 +1,57 @@
+订阅范例
+
+dm1lc3M6Ly9ldzBLSUNBaWRpSTZJQ0l5SWl3TkNpQWdJbkJ6SWpvZ0l1aXVvdW1ZaGVhMWkraXZsVEVpTEEwS0lDQWlZV1JrSWpvZ0lqRXlMak0wTlRZM0xuaDVlaUlzRFFvZ0lDSndiM0owSWpvZ0lqRXhNQ0lzRFFvZ0lDSnBaQ0k2SUNKa00yUXhNbVV4TWkxbU56VTFMVFF5TWpFdE9HUTBOQzFsTWpGall6TTBPR0poTXpnaUxBMEtJQ0FpWVdsa0lqb2dJakFpTEEwS0lDQWlibVYwSWpvZ0luZHpJaXdOQ2lBZ0luUjVjR1VpT2lBaWJtOXVaU0lzRFFvZ0lDSm9iM04wSWpvZ0lpSXNEUW9nSUNKd1lYUm9Jam9nSWk5M2MzZHpkM012SWl3TkNpQWdJblJzY3lJNklDSjBiSE1pRFFwOQp2bWVzczovL2V3MEtJQ0FpZGlJNklDSXlJaXdOQ2lBZ0luQnpJam9nSXVpdW91bVloZWExaStpdmxUSWlMQTBLSUNBaVlXUmtJam9nSW1GaVkyUmxMak0wTlRZM0xuaDVlaUlzRFFvZ0lDSndiM0owSWpvZ0lqRXhNQ0lzRFFvZ0lDSnBaQ0k2SUNJek9Ea3dOamswTWkwME1HRXhMVFEwWXpRdE9HVTVaaTA0WW1JM1pESmhNelF5TlRVaUxBMEtJQ0FpWVdsa0lqb2dJakFpTEEwS0lDQWlibVYwSWpvZ0luZHpJaXdOQ2lBZ0luUjVjR1VpT2lBaWJtOXVaU0lzRFFvZ0lDSm9iM04wSWpvZ0lpSXNEUW9nSUNKd1lYUm9Jam9nSWk5alpHTmtZMlF2SWl3TkNpQWdJblJzY3lJNklDSjBiSE1pRFFwOQpzczovL1lXVnpMVEkxTmkxalptSTZZV0pqWkdWbVoyVm1aMlJBTVRFdU1qSXVNek11TkRRNk16TXpNek09CnNzOi8vWVdWekxUSTFOaTFqWm1JNllXSmpaR1ZtWjJWbVoyUkFNek11TXpNdU16TXVORFE2TkRRME5EUT0Kdm1lc3M6Ly9ldzBLSUNBaWRpSTZJQ0l5SWl3TkNpQWdJbkJ6SWpvZ0l1aXVvdW1ZaGVhMWkraXZsVE0wSWl3TkNpQWdJbUZrWkNJNklDSXhNaTR6TkRVMk55NTRlWG9pTEEwS0lDQWljRzl5ZENJNklDSXpORFEwTkNJc0RRb2dJQ0pwWkNJNklDSmtNMlF4TW1VeE1pMW1OelUxTFRReU1qRXRPR1EwTkMxbE1qRmpZek0wT0dKaE16Z2lMQTBLSUNBaVlXbGtJam9nSWpBaUxBMEtJQ0FpYm1WMElqb2dJblJqY0NJc0RRb2dJQ0owZVhCbElqb2dJbTV2Ym1VaUxBMEtJQ0FpYUc5emRDSTZJQ0lpTEEwS0lDQWljR0YwYUNJNklDSWlMQTBLSUNBaWRHeHpJam9nSWlJTkNuMD0=
+
+上面是base64加密，解码得到以下结果
+vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIuiuoumYhea1i+ivlTEiLA0KICAiYWRkIjogIjEyLjM0NTY3Lnh5eiIsDQogICJwb3J0IjogIjExMCIsDQogICJpZCI6ICJkM2QxMmUxMi1mNzU1LTQyMjEtOGQ0NC1lMjFjYzM0OGJhMzgiLA0KICAiYWlkIjogIjAiLA0KICAibmV0IjogIndzIiwNCiAgInR5cGUiOiAibm9uZSIsDQogICJob3N0IjogIiIsDQogICJwYXRoIjogIi93c3dzd3MvIiwNCiAgInRscyI6ICJ0bHMiDQp9
+vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIuiuoumYhea1i+ivlTIiLA0KICAiYWRkIjogImFiY2RlLjM0NTY3Lnh5eiIsDQogICJwb3J0IjogIjExMCIsDQogICJpZCI6ICIzODkwNjk0Mi00MGExLTQ0YzQtOGU5Zi04YmI3ZDJhMzQyNTUiLA0KICAiYWlkIjogIjAiLA0KICAibmV0IjogIndzIiwNCiAgInR5cGUiOiAibm9uZSIsDQogICJob3N0IjogIiIsDQogICJwYXRoIjogIi9jZGNkY2QvIiwNCiAgInRscyI6ICJ0bHMiDQp9
+ss://YWVzLTI1Ni1jZmI6YWJjZGVmZ2VmZ2RAMTEuMjIuMzMuNDQ6MzMzMzM=
+ss://YWVzLTI1Ni1jZmI6YWJjZGVmZ2VmZ2RAMzMuMzMuMzMuNDQ6NDQ0NDQ=
+vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIuiuoumYhea1i+ivlTM0IiwNCiAgImFkZCI6ICIxMi4zNDU2Ny54eXoiLA0KICAicG9ydCI6ICIzNDQ0NCIsDQogICJpZCI6ICJkM2QxMmUxMi1mNzU1LTQyMjEtOGQ0NC1lMjFjYzM0OGJhMzgiLA0KICAiYWlkIjogIjAiLA0KICAibmV0IjogInRjcCIsDQogICJ0eXBlIjogIm5vbmUiLA0KICAiaG9zdCI6ICIiLA0KICAicGF0aCI6ICIiLA0KICAidGxzIjogIiINCn0=
+
+以上每个单独的也是base64加密。单独解码得到
+{
+  "v": "2",
+  "ps": "订阅测试1",
+  "add": "12.34567.xyz",
+  "port": "110",
+  "id": "d3d12e12-f755-4221-8d44-e21cc348ba38",
+  "aid": "0",
+  "net": "ws",
+  "type": "none",
+  "host": "",
+  "path": "/wswsws/",
+  "tls": "tls"
+}
+
+{
+  "v": "2",
+  "ps": "订阅测试2",
+  "add": "abcde.34567.xyz",
+  "port": "110",
+  "id": "38906942-40a1-44c4-8e9f-8bb7d2a34255",
+  "aid": "0",
+  "net": "ws",
+  "type": "none",
+  "host": "",
+  "path": "/cdcdcd/",
+  "tls": "tls"
+}
+
+aes-256-cfb:abcdefgefgd@11.22.33.44:33333
+
+aes-256-cfb:abcdefgefgd@33.33.33.44:44444
+
+{
+  "v": "2",
+  "ps": "订阅测试34",
+  "add": "12.34567.xyz",
+  "port": "34444",
+  "id": "d3d12e12-f755-4221-8d44-e21cc348ba38",
+  "aid": "0",
+  "net": "tcp",
+  "type": "none",
+  "host": "",
+  "path": "",
+  "tls": ""
+}
