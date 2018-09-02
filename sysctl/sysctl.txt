@@ -66,7 +66,7 @@ net.core.wmem_max=33554432
 # buffer的近似计算<此时不管应用缓存，计算得到后再根据上面比例增加即可得到最终包含"应用缓存"的buffer值> 
 # 这里涉及到一个概念BDP <带宽时延乘积（英语：bandwidth-delay product)>
 # 计算公式<注意单位1Bytes(字节)=8bit(比特)>：BDP（比特）= total_available_bandwidth（比特/秒就是网络带宽比如100m）x round_trip_time（秒） 
-# 注意：1s(秒)=1000ms(毫秒)
+# 注意：1s(秒)=1000ms(毫秒)、round_trip_time可以使用ping命令获取、total_available_bandwidth网络带宽接入大小（比如1mbps可以近似认为是1000,000 bit这里单位是1000，而计算机单位为1024）
 # 这里有个计算器 https://www.speedguide.net/bdp.php
 # )))
 # 4K 5M 16M  这里的是不包括应用缓存，
