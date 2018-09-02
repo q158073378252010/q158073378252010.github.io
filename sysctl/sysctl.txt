@@ -1,1 +1,83 @@
-test
+## 似乎是关闭 ipv6
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+## 似乎是关闭 ipv6
+#获取系统分页大小
+# getconf PAGESIZE
+
+net.ipv4.tcp_abort_on_overflow=1
+#设置该参数为 1 时，当系统在短时间内收到了大量的请求，而相关的应用程序未能处理时，就会发送 Reset 包直接终止这些链接。建议通过优化应用程序的效率来提高处理能力，而不>是简单地 Reset。
+#默认值： 0。
+
+net.ipv4.tcp_syncookies=0
+# 默认似乎是打开的。但个人建议是系统未遭受攻击时还是关闭。
+
+net.ipv4.tcp_timestamps=0
+# 关闭tcp时间戳 （如果是用户是在nat后访问服务器，那么建议关闭）
+#####一段来段网络的截取
+# Linux的net.ipv4.tcp_timestamps参数 
+# 今天发生了一个奇怪的现象，在家里始终打开公司的网站打开不了，我就齐了怪了，然后我就各种测试，从ping到dig域名，然后再curl，都是没有问题的，但是就是打不开，最好没有>办法只能抓包了，从抓包的然后来看就是syn-ack没有返回，然后就google到底是因为什么？ 
+#   
+#  原因就是net.ipv4.tcp_timestamps=1，启用了时间戳，原理如下：
+#  问题出在了 tcp 三次握手，如果有一个用户的时间戳大于这个链接发出的syn中的时间戳，服务器上就会忽略掉这个syn，不返会syn-ack消息，表现为用户无法正常完成tcp3次握手，>从而不能打开web页面。在业务闲时，如果用户nat的端口没有被使用过时，就可以正常打开；业务忙时，nat端口重复使用的频率高，很难分到没有被使用的端口，从而产生这种问题。
+#####一段来自网络的截取
+#####以下三个参数为一起
+
+#防止空链接攻击 当keepalive打开的情况下，TCP发送keepalive消息的频率。(由于目前网络攻击等因素,造成了利用这个进行的攻击很频繁,曾经也有cu的朋友提到过,说如果2边建立了连
+接,然后不发送任何数据或者rst/fin消息,那么持续的时间是不是就是2小时,空连接攻击? tcp_keepalive_time就是预防此情形的.我个人在做nat服务的时候的修改值为1800秒)
+#nginx 可以单独对设置 在 listen 字段
+#TCP_KEEPCNT: tcp_keepalive_probes
+#TCP_KEEPIDLE: tcp_keepalive_time
+#TCP_KEEPINTVL: tcp_keepalive_intvil
+#so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]
+#so_keepalive=30m::10
+#    will set the idle timeout (TCP_KEEPIDLE) to 30 minutes, leave the probe interval (TCP_KEEPINTVL) at its system default, and set the probes count (TCP_KEEPCNT) to 10 probes.
+#
+#    默认情况 ：当tcp发现有tcp_keepalive_time(7200)秒未收到对端数据后，开始以间隔tcp_keepalive_intvl(75)秒的频率发送的空心跳包，如果连续tcp_keepalive_probes(9)次以>上未响应代码对端已经down了，close连接
+net.ipv4.tcp_keepalive_time=800
+#间隔多久发送一次
+net.ipv4.tcp_keepalive_intvl=59
+#发送次数
+net.ipv4.tcp_keepalive_probes=10
+
+#####以上三个参数为一起
+
+#
+net.core.default_qdisc=noqueue
+net.ipv4.tcp_congestion_control=nanqinlang
+# 关闭慢启动重置
+net.ipv4.tcp_slow_start_after_idle=0
+
+# 端口范围
+net.ipv4.ip_local_port_range = 1024 65535
+
+#tcp 套接字调整
+# 1G 1.5G 2G
+net.ipv4.tcp_mem = 262144     393216        524288
+# 16M 覆盖 net.ipv4.tcp_wmem[2]位的值
+net.core.rmem_max=33554432
+net.core.wmem_max=33554432
+# 4K 5M 16M
+# 根据该值计算 指出应用缓存的比例 此时 net.ipv4.tcp_adv_win_scale=1
+# if tcp_adv_win_scale > 0: 应用缓存 = buffer / (2^tcp_adv_win_scale)，tcp_adv_win_scale默认值为2，表示缓存的四分之一用于应用缓存，可用接收窗口占四分之三。
+# if tcp_adv_win_scale <= 0: 应用缓存 = buffer - buffer/2^(-tcp_adv_win_scale)，即接收窗口=buffer/2^(-tcp_adv_win_scale)，如果tcp_adv_win_scale=-2，接收窗口占接收缓
+存的四分之一。
+net.ipv4.tcp_wmem = 8192        1500000   33554432
+net.ipv4.tcp_rmem = 8192        1500000   33554432
+#
+#套接字接收缓存默认值
+net.core.rmem_default=1500000
+#套接字发送缓存默认值
+net.core.wmem_default=1500000
+
+# 队列调整（这里需要主要的是从内核 2.2 之后就分成两个队列 https://segmentfault.com/a/1190000008224853）
+# 默认值 128 
+# syns queue （syn队列）
+net.ipv4.tcp_max_syn_backlog=10240
+# accept queue（监听<listen>队列或者 established队列） 该值可以使用命令 ss -tnl 输出的<Send-Q> 列就是该值
+net.core.somaxconn=10240
+
+# 设备队列 默认值=1000
+# /net.core.netdev_max_backlog=10000
+
