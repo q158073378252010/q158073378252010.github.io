@@ -3,8 +3,7 @@ net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 ## 似乎是关闭 ipv6
-#获取系统分页大小
-# getconf PAGESIZE
+
 
 net.ipv4.tcp_abort_on_overflow=1
 #设置该参数为 1 时，当系统在短时间内收到了大量的请求，而相关的应用程序未能处理时，就会发送 Reset 包直接终止这些链接。建议通过优化应用程序的效率来提高处理能力，而不>是简单地 Reset。
@@ -53,16 +52,24 @@ net.ipv4.tcp_slow_start_after_idle=0
 net.ipv4.ip_local_port_range = 1024 65535
 
 #tcp 套接字调整
-# 1G 1.5G 2G
+# 1G 1.5G 2G 注意这里的单位是内存页 （1页=4K） 获取系统分页大小命令# getconf PAGESIZE
 net.ipv4.tcp_mem = 262144     393216        524288
 # 16M 覆盖 net.ipv4.tcp_wmem[2]位的值
 net.core.rmem_max=33554432
 net.core.wmem_max=33554432
-# 4K 5M 16M
-# 根据该值计算 指出应用缓存的比例 此时 net.ipv4.tcp_adv_win_scale=1
+# 
+# 根据该值计算 指出应用缓存的比例 此时 net.ipv4.tcp_adv_win_scale=1 
 # if tcp_adv_win_scale > 0: 应用缓存 = buffer / (2^tcp_adv_win_scale)，tcp_adv_win_scale默认值为2，表示缓存的四分之一用于应用缓存，可用接收窗口占四分之三。
 # if tcp_adv_win_scale <= 0: 应用缓存 = buffer - buffer/2^(-tcp_adv_win_scale)，即接收窗口=buffer/2^(-tcp_adv_win_scale)，如果tcp_adv_win_scale=-2，接收窗口占接收缓
 存的四分之一。
+# (((
+# buffer的近似计算<此时不管应用缓存，计算得到后再根据上面比例增加即可得到最终包含"应用缓存"的buffer值> 
+# 这里涉及到一个概念BDP <带宽时延乘积（英语：bandwidth-delay product)>
+# 计算公式<注意单位1Bytes(字节)=8bit(比特)>：BDP（比特）= total_available_bandwidth（比特/秒就是网络带宽比如100m）x round_trip_time（秒） 
+# 注意：1s(秒)=1000ms(毫秒)
+# 这里有个计算器 https://www.speedguide.net/bdp.php
+# )))
+# 4K 5M 16M  这里的是不包括应用缓存，
 net.ipv4.tcp_wmem = 8192        1500000   33554432
 net.ipv4.tcp_rmem = 8192        1500000   33554432
 #
@@ -71,7 +78,7 @@ net.core.rmem_default=1500000
 #套接字发送缓存默认值
 net.core.wmem_default=1500000
 
-# 队列调整（这里需要主要的是从内核 2.2 之后就分成两个队列 https://segmentfault.com/a/1190000008224853）
+# 队列调整（这里需要主要的是从内核 2.2 之后就分成两个队列 https://www.cnxct.com/something-about-phpfpm-s-backlog/   https://segmentfault.com/a/1190000008224853）
 # 默认值 128 
 # syns queue （syn队列）
 net.ipv4.tcp_max_syn_backlog=10240
