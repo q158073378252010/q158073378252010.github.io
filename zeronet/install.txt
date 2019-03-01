@@ -1,0 +1,6 @@
+# Debian_9_x64  python_2.7.x
+apt-get install python-pip
+apt-get install python-gevent python-msgpack
+git clone https://github.com/HelloZeroNet/ZeroNet.git
+cd ZeroNet
+python zeronet.py
