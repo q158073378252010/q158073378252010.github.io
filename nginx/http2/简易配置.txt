@@ -1,0 +1,52 @@
+server {
+    server_name lzw.me;
+    root /site/xxx;
+    listen 443 ssl http2 fastopen=3 default_server;
+
+    # 证书
+    ssl_certificate     /etc/ssl_cert/lzw.me.crt;
+    ssl_certificate_key /etc/ssl_cert/lzw.me.key;
+
+    # 配置赫尔曼密钥
+    # openssl dhparam -out /etc/ssl/dhparam.pem 2048 //openssl 生成 2048 位的密钥
+    ssl_dhparam /etc/ssl_cert/dhparam.pem;
+
+    # 禁止已经不安全的加密算法
+    ssl_ciphers 'ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4';
+
+    # 缓解 BEAST 攻击
+    ssl_prefer_server_ciphers on;
+
+    # OCSP 缝合
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    ssl_trusted_certificate /etc/nginx/cert/trustchain.crt;
+    resolver 114.114.114 8.8.8.8 valid=300s;
+
+    # 禁止不安全的 SSL 协议，使用安全协议
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    # 缓存连接凭据
+    ssl_session_cache shared:SSL:20m;
+    ssl_session_timeout 60m;
+
+    # 启用 HSTS，要求浏览器总是通过 https 访问
+    add_header Strict-Transport-Security 'max-age=63072000; includeSubDomains; preload';
+
+    # 禁止被外部网站 iframe
+    add_header X-Frame-Options SAMEORIGIN;
+
+    # 严格的 MIME 类型响应，禁止 MIME-sniffing 猜测资源类型
+    add_header X-Content-Type-Options nosniff;
+
+    # Public Key Pinning 对抗中间人攻击
+    # 生成方法参考：https://lzw.me/a/public-key-pins-hpkp.html
+    add_header Public-Key-Pins 'pin-sha256="oYQpJ7NWxATnj4TXRpTIKMECkarA0lPcAblBBaV23Io="; pin-sha256="JGBhwHhyQ8RjdAiTim2KGnNegkNyBfISSuCL2YiSbTM="; max-age=2592000; includeSubDomains';
+}
+
+# 80 端口跳转到 https
+server {
+    listen 80;
+    add_header Strict-Transport-Security 'max-age=31536000; includeSubDomains; preload';
+    return 301 https://lzw.me$request_uri;
+	}
