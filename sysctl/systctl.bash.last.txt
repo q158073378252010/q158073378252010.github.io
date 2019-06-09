@@ -1,0 +1,66 @@
+#####
+sysctl -w net.ipv4.tcp_wmem="4096 1048576 421134336"
+sysctl -w net.ipv4.tcp_rmem="4096 1048576 421134336"
+sysctl -w net.core.rmem_max=421134336
+sysctl -w net.core.wmem_max=421134336
+sysctl -w net.core.rmem_default=16777216
+sysctl -w net.core.rmem_default=16777216
+# sysctl -w net.ipv4.tcp_mem="1310720      1572864 1835008"
+sysctl -w net.ipv4.tcp_mem="1441792 1572864 1703936"
+
+
+# 监听队列长度 半连接队列长度，如果net.core.somaxconn < tcp_max_syn_backlog 则accept队列=半连接队列=net.core.somaxconn
+sysctl -w net.ipv4.tcp_max_syn_backlog=1024
+sysctl -w net.core.somaxconn=256
+# InputPacket Queue(数据包接收队列)
+# recvBuffer 当接收数据包的速率大于内核TCP处理包的速率，数据包将会缓冲在TCP层之前的队列中。接收队列的长度由参数net.core.netdev_max_backlog设置
+sysctl -w net.core.netdev_max_backlog=3000
+
+sysctl -w net.ipv4.tcp_keepalive_time=33
+sysctl -w net.ipv4.tcp_keepalive_intvl=10
+sysctl -w net.ipv4.tcp_keepalive_probes=2
+#来源：TCP在FIN_WAIT1状态到底能持续多久以及TCP假连接问题 
+#链接：https://blog.csdn.net/dog250/article/details/81697403
+#2018年08月16日
+sysctl -w net.ipv4.tcp_orphan_retries=2
+#来源：一个TCP FIN_WAIT2状态细节引发的感慨
+#https://blog.csdn.net/dog250/article/details/81256550
+#2018年07月28日 08:14:15
+sysctl -w net.ipv4.tcp_fin_timeout=5
+
+#sysctl -w net.ipv4.ipfrag_high_thresh=629145600
+#sysctl -w net.ipv4.ipfrag_low_thresh=314572800
+
+
+sysctl -w net.netfilter.nf_conntrack_tcp_timeout_fin_wait=30
+sysctl -w net.netfilter.nf_conntrack_tcp_timeout_time_wait=30
+sysctl -w net.netfilter.nf_conntrack_tcp_timeout_close_wait=15
+sysctl -w net.netfilter.nf_conntrack_tcp_timeout_established=1800
+sysctl -w net.netfilter.nf_conntrack_icmp_timeout=5
+sysctl -w net.netfilter.nf_conntrack_udp_timeout=5
+
+sysctl -w net.ipv4.tcp_congestion_control=bbr
+sysctl -w net.ipv4.ip_local_port_range="1024 65535"
+#来源：TCP拥塞控制窗口有效性验证机制
+#链接：https://blog.csdn.net/zhangskd/article/details/7609465
+#2012年06月05日 17:39:31
+sysctl -w net.ipv4.tcp_slow_start_after_idle=0
+#来源：networking:tcp_testing [Linux Foundation Wiki] - NetEm
+#链接：https://wiki.linuxfoundation.org/networking/tcp_testing
+#介绍：通常Linux会记住最后一个慢启动阈值（ssthresh）。（如果测试涉及重复连接，您还应关闭路径指标）
+# https://blog.51cto.com/storysky/774164
+#一个tcp连接关闭后,把这个连接曾经有的参数比如慢启动门限snd_sthresh,拥塞窗口snd_cwnd 还有srtt等信息保存到dst_entry中,
+ # 只要dst_entry 没有失效,下次新建立相同连接的时候就可以使用保存的参数来初始化这个连接.
+# https://www.jdon.com/performance/mobile-linux.html
+#3.2版本之前的未打补丁的内核tcp_no_metrics_save = 0 的sysctl设置会更致命。此设置将保存数据在所有连接上，并试图用它来优化网络。
+ # 不幸的是，这实际上使性能更差，因为TCP会将一个丢包的例外情况下采取的策略适用于这个客户端中几分钟的窗口内的每一个新连接。
+ #  句话说，在某些情况下，一个人从手机浏览您的网站如果一些随机数据包丢失，能够降低你的服务器的性能，尽管他。如果你希望你的访问者从移动，
+ # 有损连接来了，你不能升级或修补的内核，我建议设置tcp_no_metrics_save = 1 ,Linux的3.2 的PRR能降低影响TCP性能的有损连接的数量。
+sysctl -w net.ipv4.tcp_no_metrics_save=1
+sysctl -w net.ipv4.tcp_syncookies=0
+sysctl -w net.ipv4.tcp_timestamps=0
+sysctl -w net.netfilter.nf_conntrack_tcp_loose=0
+
+#iptables 
+#iptables -I INPUT -p tcp --dport 80  -m connlimit --connlimit-above 3  -j DROP
+#iptables -I INPUT -p tcp --dport 443 -m connlimit --connlimit-above 10 -j DROP
