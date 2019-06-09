@@ -1,0 +1,3 @@
+openssl s_client -alpn h2 -servername www.google.com -connect www.google.com:443 < /dev/null | grep 'ALPN'
+
+看到输出 ALPN protocol: h2 则说明是支持的。
