@@ -1,0 +1,27 @@
+查看进程的资源限制，文件位于 /proc/<pid>/limits
+cat 命令查看后类似一下输出：
+
+root@OpenWrt:/etc/init.d# cat /proc/2077/limits
+Limit                     Soft Limit           Hard Limit           Units
+Max cpu time              unlimited            unlimited            seconds
+Max file size             unlimited            unlimited            bytes
+Max data size             unlimited            unlimited            bytes
+Max stack size            8388608              unlimited            bytes
+Max core file size        0                    unlimited            bytes
+Max open files            1024                 4096                 files
+Max address space         unlimited            unlimited            bytes
+Max resident set          unlimited            unlimited            bytes
+Max processes             974                  974                  processes
+Max locked memory         65536                65536                bytes
+Max file locks            unlimited            unlimited            locks
+Max pending signals       974                  974                  signals
+Max msgqueue size         819200               819200               bytes
+Max nice priority         0                    0
+Max realtime priority     0                    0
+Max realtime timeout      unlimited            unlimited            us
+如果你想真的修改 Max open files 突破 4096 那么在设置 procd_set_param limits nofile= 时必须传入两参数，如果你只填写一个参数则只会修改 Soft Limit 并且忽略超过4096以上值的修改。注：即使修改nofile比 fs.file-max 大依然会被应用，不会被降低到等于fs.file-max的值。 最终是否受到fs.file-max控制没有测试
+正确写法应该是这样：
+
+start_service() {
+    procd_set_param limits nofile="5000 10000"
+}
